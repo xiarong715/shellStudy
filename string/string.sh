@@ -216,9 +216,55 @@ echo "------------------------"
 # .：表示匹配任意字符，除换行符
 
 
-# 如何判断一个字符串是否由大小写字母或数字开头（或结尾）
+# 如何判断一个字符串是否由字母或数字开头
 str="hsol-M202"
-echo $str | grep '^[A-Za-z0-9].*'
+echo $str | grep '^[A-Za-z0-9]'
+
+# 如何判断一个字符串是否由字母或数字结尾
+str="hsol-M203"
+echo $str | grep '[A-Za-z0-9]$'
+
+# 删除字符串中指定的字符
+# sed 中分隔符可以换，只要一致即可
+echo "2021-12-08 17:10:50" | sed 's/-//g' | sed 's/://g'    # 删除 - 和 :
+echo "2021-12-08 17:10:50" | sed 's#-##g' | sed 's#:##g'
+echo "2021-12-08 17:10:50" | sed 's@-@@g' | sed 's@:@@g'
+
+# 删除字符串中的特殊字符，特殊字符使用\转义
+echo "#$@abc123" | sed 's/\#//g' | sed 's/\$//g' |  sed 's/\@//g'
+# 使用 tr -d 命令删除字符
+echo "#$@abc123" | tr -d '#' | tr -d '$' | tr -d '@'
+
+#  echo $$  # 打印进程号
+
+# sed 也支持正则
+echo -e "123\nabc\n456\ndef" | sed -n '/[0-9]/p'    # echo -n 使能转义字符, 将匹配数字的行打印出来, sed -n 不会把输入打印出来
+sed -n '/[0-9]/p' filename                          # 将文件中匹配数字的行打印出来
+sed -n '/[a-z]/p' filename
+sed -n '/[A-Z]/p' filename
+
+echo -e "123\nabc\n456\ndef" | sed '/[0-9]/d'       # 将匹配数字的行删除，有在屏幕打印出没删除的行
+sed -n '/[0-9]/d' filename                          # 将文件中匹配数字的行删除，改动没写入文件，且不在屏幕上打印出没删除的行
+sed -i '/[0-9]/d' filename                          # 将文件中匹配数字的行删除，并且将改动写入文件
+sed -n '/[A-Z]/d' filename                          # 将文件中匹配大写字母的行删除，改动不写入文件
+sed -n '/[a-z]/d' filename                          # 将文件中匹配小写字母的行删除，改动不写入文件
+
+echo -e "123root\nabcroot\n456root" | sed '/[0-9]/s/root/ipanel/g'  # 匹配数字的行，将root替换为ipanel
+echo -e "123ROOT\nabcROOT\n456ROOT" | sed '/[a-z]/s/ROOT/ipanel/g'  # 匹配小写字母的行，将ROOT替换为ipanel
+echo -e "123root\nABCroot\n456root" | sed '/[A-Z]/s/root/ipanel/g'  # 匹配大写字母的行，将root替换为ipanel
+
+# tr 也技持正则
+echo "hooweek132RFS" | tr -d '[a-z]'    # 删除字符串中的小写字母
+echo "hooweek132RFS" | tr -d '[A-Z]'    # 删除字符串中的大写字母
+echo "hoowekk132RFS" | tr -d '[0-9]'    # 删除字符串中的数字
+
+# 匹配邮箱
+echo "xiarong2010@163.com" | grep '^[A-Za-z0-9]*\@[a-z0-9]*\.[A-Za-z]*$'        # ok
+echo "xiarong2010@mail.com" | grep '^[A-Za-z0-9]*\@[a-z0-9]*\.[A-Za-z]*$'       # ok
+echo "xiarong2010@QQ.com" | grep '^[A-Za-z0-9]*\@[a-z0-9]*\.[A-Za-z]*$'         # no
+
+
+
 
 
 
