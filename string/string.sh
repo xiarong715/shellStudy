@@ -114,6 +114,31 @@ str="hello world"
 substring=`expr substr "${str}" 7 5`  # 从1开始标号
 echo "expr substr ${str} 7 5" ":" "${substring}"
 
+# 截取字符串
+# 使用正则表达式截取子串，但只能截取string开头或结尾的子串
+# 截取字符串开头的子串，格式
+# 格式一：expr match $string ''
+# 格式二：expr $string : ''
+
+# 截取字符串结尾的子串，格式
+# 格式一：expr match $string '.*'
+# 格式二：expr $string : '.*'       # note:  .* 表示任意字符的任意重复，一个 . 表示一个字符
+# 与匹配字符串长度的区别是：截取字符串的正则达式用小括号括起来了
+str="20211207helloWORLDwuhan"
+echo `expr match "${str}" '\([0-9]*\)'`     # 20211207
+echo `expr match "${str}" '\([0-9]*\)'`     # 20211207
+echo `expr "${str}" : '\([0-9]*\)'`         # 20211207
+
+echo `expr match "${str}" '.*\(.\)'`        # n         # 一个 . 表示一个字符
+echo `expr match "${str}" '.*\(..\)'`       # an
+echo `expr "${str}" : '.*\(..\)'`           # an
+
+str="helloWORLD20211207wuhan"
+echo `expr match "${str}" '\([a-z]*\)'`     # hello
+echo `expr match "${str}" '\([a-Z]*\)'`     # helloWORLD
+echo `expr match "${str}" '\([a-Z]*[0-9]*\)'` # helloWORLD20211207
+echo `expr match "${str}" '.*\(.....\)'`   # wuhan，截取字符串结尾的子串时，只能指字符的个数吗
+
 
 # 删除字符串的子串
 # 删除子串是指将原字符串中符合条件的子串删除
@@ -136,15 +161,37 @@ TOOLPATH=${TOOLPATH#/}      # 从左开始删除第一个匹配到的"/"
 TOOLPATH=${TOOLPATH%%/*}    # 从右开始，删除从最后一个字符开始到第后一个匹配到的"/"，使用通配符"*"
 echo "TOOLPATH%%/*" ":"　"${TOOLPATH}"
 
+# 字符串替换
+# 替换子串命令可以在任意处、开头处、结尾处替换满足条件的子串，其中substring都不是正则表达式而是通配符
+# 格式一：${string/substring/replacement} ， 仅替换第一次与substring匹配的子串
+# 格式二：${string//substring/replacement} ，替换所有与substring匹配的子串
+str="hello world world"
+str=${str/world/lsy}    # 替换第一个world
+echo "str" ":" $str
+str=${str//world/lsy}   # 替换所有的world
+str=${str/ /--} # 替换空格
+echo "str" ":" $str
+str=${str// /--} # 替换所有空格
+echo "str" ":" $str
 
+# 在开头处替换，格式为：${string/#substring/replacement}
+# 在结尾处替换，格式为：${string/%substring/replacement}
+str="good boby"
+str=${str/#g/G} # 替换开头的g
+echo "str" ":" $str
+str=${str/%y/Y} # 替换结尾的y
+echo "str" ":" $str
 
-
-
-
-
+# ${!varprefix*} ${!varprefix@}
+test="gogo"
+test1="gogo1"
+test2="gogo2"
+test3="gogo3"
+echo "{!test*}" ":" ${!test*}
+echo "{!test@}" ":" ${!test@}
 
 # -------------------------------------------------------------------
-# 获取shell变量值，只需在变量名前加一个"$"，且用大括号把变量名括起来，是一种好的编程习惯
+# 获取shell变量值，只需在变量名前加一个"$"，用大括号把变量名括起来，是一种好的编程习惯
 str="shell"
 echo "I love" ${str}
 echo "I love" $strscript    # 不加大括号，解译器会误认为strscript是变量名
@@ -159,6 +206,19 @@ echo 'hello lsy'
 echo hello lsy
 echo "------------------------"
 # -------------------------------------------------------------------
+
+# shell 正则表达式
+# ^：表示匹配行首，如^d，表示以d开头
+# $：表示匹配行尾，如/$，表示以/结尾
+# *：通配符，表示匹配0次或多次前一字符
+# +：表示匹配一个或多个前一字符
+# ?：表示匹配0个或一个前一字符
+# .：表示匹配任意字符，除换行符
+
+
+# 如何判断一个字符串是否由大小写字母或数字开头（或结尾）
+str="hsol-M202"
+echo $str | grep '^[A-Za-z0-9].*'
 
 
 
