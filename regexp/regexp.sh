@@ -13,7 +13,7 @@
 # .：匹配任意字符
 # []：字符集（范围）
 # [^char]：字符集取反
-# <word>：匹配单词
+# <word>：匹配单词， \<word\>
 # \: 转义，匹配特殊字符
 # 
 
@@ -64,9 +64,10 @@ ls -l | grep 'a[0-9]x'	# find all the files which contains a number in the file 
 ls | grep '[^abc]'	# match all the file names except a or b or c in it's filenames，匹配不是a b c的字符
 ls | grep '[^A-Z]'	# match all the file names expcet A - Z in it's filenames, 匹配不在A-Z中的字符，即匹配名字为小写的文件或目录
 
-# "<WORD>"的例子，**再次确认**
+# "<WORD>"的例子，\< 和 \> 确定单词边界
 
-grep '<abc>' filename
+grep '<abc>' filename	# 不太对
+grep '\<abc\>' filename	# 可正常匹配
 
 # "\"的例子
 
@@ -83,7 +84,7 @@ grep '[[]' filename # find all lines which contain [ in line.
 
 ls | grep -E 't{3}'		# find all the file names which contain "t" and t repeats for 3 times consecutively
 ls | grep -E 'l{1,3}'	# find all the file names which contains l letter in filename with 1 occurrence to 3 occurrence consecutively
-ls | grep -E 'k{5,}'		# find all the file names which contains k letter 5 and more in a file name
+ls | grep -E 'k{5,}'	# find all the file names which contains k letter 5 and more in a file name
    
 # This is bit tricky, let me explain this. Actually we given a range i.e 5 to infinity (just given only comma after 5).
 
