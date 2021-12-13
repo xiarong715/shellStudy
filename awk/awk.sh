@@ -43,6 +43,7 @@ awk '{print $1, $NF}' employee.txt  # 打印最一个域和最后一个域
 awk 'NF == 0 {print NR}' employee.txt   # 打印出空行的行号
 
 # FS: FS command contains the field separator character which is used to divide fields on the input line. The default is “white space”, meaning space and tab characters. FS can be reassigned to another character (typically in BEGIN) to change the field separator.
-awk 'BEGIN FS=: {print $1,$NF}' /etc/passwd
+awk -F : '{print $1, $NF}' /etc/passwd          # 使用 -F 选项设置分隔符
+awk 'BEGIN {FS=":"} {print $1,$NF}' /etc/passwd # 使用 设置FS的值，设转走分隔符
 
 # https://www.howtogeek.com/562941/how-to-use-the-awk-command-on-linux/

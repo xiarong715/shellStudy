@@ -1,0 +1,4 @@
+ipanel home
+info sed
+file ls
+linux
