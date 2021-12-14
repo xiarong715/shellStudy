@@ -63,7 +63,7 @@ sed 's/unix/linux/2' geekfile.txt
 sed 's/unix/linux/3g' geekfile.txt
 
 # parenthesize first character of each world: This sed example prints the first character of every word in parenthesis.
-echo "Welcome To The Geek Stuff SF" | sed 's/\(\b[A-Z]\)/\(\1\)/g'
+echo "Welcome To The Geek Stuff SF" | sed 's/\(\b[A-Z]\)/\(\1\)/g'      # \1 的值为前面第一个()中捕捉到的值
 # \b   表示匹配文本中单词的开头或结尾字符，也能匹配字符组成的单词
 # \bxx 匹配单词开头的xx位置，如\b[A-Z]匹配单词开头的大写字母，\bab匹配以ab开头的单词的ab位置
 # xx\b 匹配单词结尾的xx位置，如[a-z]\b匹配单词结尾的小写字母，ab\b匹配以ab结尾的单词的ab位置
@@ -78,8 +78,30 @@ echo "Welcome To The Geek Stuff SF" | sed 's/\(\b[A-Z]\)/\(\1\)/g'
 
 # \1 代表正则捕捉到的第一个域，\2 代表正则捕捉到的第二个域，以此类推
 
-
-
+# replacing string on a special line number: you can restrict the sed command to replacing the string on a special line number.
+sed '3 s/unix/linux/g' ipanelfile.txt
 
 # Each `sed' command consists of an optional address or address range,
 # followed by a one-character command name and any additional command-specific code.
+
+# sed command follow this syntax:
+# [addr]X[options]
+# addr是一个可选的行地址，可以是行号，行范围，正则匹配；
+# X是一个命令，可以是s、d、p等等，可查看文档`info sed`，第3.2节'sed' commands summary；
+# options根据命令不同而不同；
+
+# s 命令
+# s/REGEXP/REPLACEMENT/[FLAGS]
+# [FLAGS]: 1 2 ... ， 指定第几次匹配到时替换；2g 3g .. ，指定从第几次匹配到时开始替换； g ，一行中的所有匹配到的都替换；sed命令是针一行操作的；
+sed 's/abc/efg/2'   # 第二次匹配到abc时，把abc替换成efg，
+
+sed '3 d'       ipanelfile.txt  # 删除第三行
+sed '2,5 d'     ipanelfile.txt  # 删除第二行到第五行
+sed '2,$ d'     ipanelfile.txt  # 删除第二行到最后一行
+sed '$ d'       ipanelfile.txt  # 删除最后一行
+sed '2~2 d'     ipanelfile.txt  # 从第二行开始，每二行的内容删除
+sed '/abc/ d'   ipanelfile.txt  # 删除匹配abc的行
+sed '/^foo/q42' ipanelfile.txt  # 打印所有行，直到foo开头的行，退出，状态码为42
+
+sed '/abc/s/bc/aa/g' ipanelfile.txt # 匹配abc的行，修改bc为aa
+

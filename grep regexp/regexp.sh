@@ -72,7 +72,7 @@ grep '\<abc\>' filename	# 可正常匹配
 # "\"的例子
 
 ls | grep '\['	# find files which contain [ in it's name, as [ is a special character we have to escpe it.
-grep '\[]' filename # find all lines which contain [ in line.
+grep '\[' filename # find all lines which contain [ in line.
 # or 
 grep '[[]' filename # find all lines which contain [ in line.
 
@@ -99,3 +99,9 @@ ls | grep -E 'f+'	# find all the files which contains f letter, one more occurre
 ls | grep -E 'a|b'	# find all the files which may contain a or b in it's file name
 ls | grep -E 't?'	# find all the files which may contain t or 1 occurrence of t in filename	
 ls | grep -E '(ab)'	# find all the files which contains ab in the sequence
+
+# 扩展的正则表达式，如果不加 -E 选项，特殊字符需要转义（\）
+grep 'a\+'			regexpfile.txt
+grep 'ipanel\|file' regexpfile.txt
+grep 'f\?'			regexpfile.txt
+grep '\(abc\)'		regexpfile.txt
