@@ -47,6 +47,21 @@ awk 'NF == 0 {print NR}' employee.txt   # 打印出空行的行号
 
 # FS: FS command contains the field separator character which is used to divide fields on the input line. The default is “white space”, meaning space and tab characters. FS can be reassigned to another character (typically in BEGIN) to change the field separator.
 awk -F : '{print $1, $NF}' /etc/passwd          # 使用 -F 选项设置分隔符
-awk 'BEGIN {FS = ":"} {print $1,$NF}' /etc/passwd # 使用 设置FS的值，设转走分隔符
+awk 'BEGIN {FS = ":"} {print $1,$NF}' /etc/passwd # 使用 设置FS的值，设置分隔符
+awk 'FS=":" {print $1, $NF}' /etc/passwd        # 设置分隔符，效果同上
+date | awk 'OFS="/" {print $2, $3, $NF}'        # Dec/15/2021
+date | awk 'OFS="-" {print $2, $3, $NF}'        # Dec-15-2021
+
+# The BEGIN and END Rules
+# A BEGIN rule is executed once before any text processing starts. 
+# In fact, it’s executed before awk even reads any text. 
+# An END rule is executed after all processing has completed. 
+# You can have multiple BEGIN and END rules, and they’ll execute in order.
+awk 'BEGIN {FS=":"; OFS="-"} {print $1}' /etc/passwd    # BEGIN 有 action，{FS=":"; OFS="-"}，在输入前执行一次，{print $1}对所有行执行操作
+
+# BEGIN和END都有action,BEGIN是在输入前执行一次，END是在输入结束后执行一次
+# 在BEGIN和END中间的action，对每一行都执行一次
+awk 'BEGIN {FS=":"} {print $0} END {print NR}' /etc/passwd
+
 
 # https://www.howtogeek.com/562941/how-to-use-the-awk-command-on-linux/

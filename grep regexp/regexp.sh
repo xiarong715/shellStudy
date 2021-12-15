@@ -105,3 +105,7 @@ grep 'a\+'			regexpfile.txt
 grep 'ipanel\|file' regexpfile.txt
 grep 'f\?'			regexpfile.txt
 grep '\(abc\)'		regexpfile.txt
+
+# 上面只是展示正则表达式的用法
+# grep 的用法
+# 参考：https://www.geeksforgeeks.org/grep-command-in-unixlinux/

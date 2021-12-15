@@ -190,6 +190,20 @@ test3="gogo3"
 echo "{!test*}" ":" ${!test*}
 echo "{!test@}" ":" ${!test@}
 
+# 判断读取变量值
+# var="string"
+default="str"
+ERR_MSG_DEFINE="not define"
+ERR_MSG_INITIAL="not initial"
+echo ${var-${default}}  # 如果var没声明，则${default}作为最终的值
+echo ${var:-${default}} # 如果var没声明，或var值为空，则${default}作为最终的值
+echo ${var=${default}}  # 如果var没声明，则${default}作为最终的值
+echo ${var:=${default}} # 如果var没声明，或var值为空，则${default}作为最终的值
+echo ${var+${default}}  # 如果var声明了，那么${default}作为最终的值
+echo ${var:+${default}} # 如果var被设置了，不为空，那么${default}作为最终值
+echo ${var?$ERR_MSG_DEFINE}    # 如果var没声明，那么最终值为${ERR_MSG_DEFINE}
+echo ${var:?$ERR_MSG_INITIAL}   # 如果var没被设置，那么最终值为${ERR_MSG_INITIAL}
+
 # -------------------------------------------------------------------
 # 获取shell变量值，只需在变量名前加一个"$"，用大括号把变量名括起来，是一种好的编程习惯
 str="shell"
@@ -264,9 +278,28 @@ echo "xiarong2010@mail.com" | grep '^[A-Za-z0-9]*\@[a-z0-9]*\.[A-Za-z]*$'       
 echo "xiarong2010@QQ.com" | grep '^[A-Za-z0-9]*\@[a-z0-9]*\.[A-Za-z]*$'         # no
 
 
+# shell 字符串
+# shell脚本中字符串可以使用双引号、单引号、不使用引号来定义
+str=helloworld
+str='helloworld'
+str="helloworld"
+echo $str
 
+# shell不使用引号定义字符串，在给变量赋值字符串时，字符串中不允许有空格
+ID=mac
+echo $ID
 
+# shell使用单引号定义字符串，单引号内的任何字符都会原样输出，单引号字符串中变量是无效的
+ID='mac'
+echo $ID
+str='lsy $ID'   # $ID会当作普通字符串处理
+echo $str       # lsy $ID，$ID原样输出
 
+# shell使用双引号定义字符串，双引号里可以出现变量，可以出现转义字符
+ID="mac"
+echo $ID
+str="lsy \"$ID\""   # 双引号内有变量和转义字符
+echo $str           # lsy "mac"
 
 
 

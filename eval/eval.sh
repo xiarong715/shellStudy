@@ -21,3 +21,34 @@ get_linux_version2() {
 
 get_linux_version1
 get_linux_version2
+
+# 读取值的值：把一个变量名传给一个函数，在函数中给这个变量赋值，在函数外访问这个变量时，很有用
+ret_url=url
+url="http://192.168.10.1"
+eval echo '$'"${ret_url}"   # http://192.168.10.1
+eval echo \${${ret_url}}    # http://192.168.10.1
+eval echo ${!ret_url}       # http://192.168.10.1
+
+eval ret=\${${ret_url}}     # ret=http://192.168.10.1
+
+getRepo() {
+    local url=
+    setUrl url  # 变量名传给setUrl函数
+    echo $url
+}
+
+setUrl() {
+    local ret_url=$1
+    local x="http://192.168.1.10"
+    [ "$ret_url" ] && {
+        eval $ret_url=$x    # 给变量赋值
+    }
+}
+
+getRepo
+
+# curl -H 'Accept: text/gita' http://public:public@192.168.43.99/project/?mix
+
+
+# ${}
+# $()
