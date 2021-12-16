@@ -195,14 +195,14 @@ echo "{!test@}" ":" ${!test@}
 default="str"
 ERR_MSG_DEFINE="not define"
 ERR_MSG_INITIAL="not initial"
-echo ${var-${default}}  # 如果var没声明，则${default}作为最终的值
-echo ${var:-${default}} # 如果var没声明，或var值为空，则${default}作为最终的值
-echo ${var=${default}}  # 如果var没声明，则${default}作为最终的值
-echo ${var:=${default}} # 如果var没声明，或var值为空，则${default}作为最终的值
-echo ${var+${default}}  # 如果var声明了，那么${default}作为最终的值
-echo ${var:+${default}} # 如果var被设置了，不为空，那么${default}作为最终值
-echo ${var?$ERR_MSG_DEFINE}    # 如果var没声明，那么最终值为${ERR_MSG_DEFINE}
-echo ${var:?$ERR_MSG_INITIAL}   # 如果var没被设置，那么最终值为${ERR_MSG_INITIAL}
+echo ${var-default}  # 如果var没声明，则default作为最终的值
+echo ${var:-default} # 如果var没声明，或var值为空，则default作为最终的值
+echo ${var=default}  # 如果var没声明，则default作为最终的值
+echo ${var:=default} # 如果var没声明，或var值为空，则default作为最终的值
+echo ${var+default}  # 如果var声明了，那么default作为最终的值
+echo ${var:+default} # 如果var被设置了，不为空，那么default作为最终值
+echo ${var?ERR_MSG_DEFINE}    # 如果var没声明，那么ERR_MSG_DEFINE输出到STDERR
+echo ${var:?ERR_MSG_INITIAL}   # 如果var没被设置，那么ERR_MSG_INITIAL输出到STDERR
 
 # -------------------------------------------------------------------
 # 获取shell变量值，只需在变量名前加一个"$"，用大括号把变量名括起来，是一种好的编程习惯
@@ -300,6 +300,11 @@ ID="mac"
 echo $ID
 str="lsy \"$ID\""   # 双引号内有变量和转义字符
 echo $str           # lsy "mac"
+
+str="lsy \n$ID"  # 有特殊字符
+echo -e $str        # -e 选项，打印特殊字符，若没有 -e 选项，\n当作普通字符串处理，即\ 和 n两个字符；
+
+
 
 
 
