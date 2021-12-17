@@ -183,16 +183,29 @@ for ((i=1; i<=5; i++)); do
 done
 
 # Double square brackets provide enhanced test functionality
+# 双方括号增强测试功能，提供模式匹配功能
 # You can use && instead of -a
 # You can use || instead of -o
 # You can use =~ to match regular expression patterns
 
 # Example of regular expression matching in test condition
+# Note that STRING should be quoted and REGULAR EXPRESSION should not be quoted.
+# 对上一句的説明：$file可用双引号也可不用，此处正则表达式不用双引号
 for file in $(ls); do 
     if [[ $file =~ ^hello.*txt ]]; then     # 正则匹配，打印匹配成功的文件名
         echo $file
     fi
 done
+
+GET_REPO_URL() {
+    local repo=$(git remote -v 2>/dev/null | grep "fetch" | awk '{print $2}')   # $()和``作用相同
+    if [[ $repo != http://* ]]; then        # 不匹配时，双括号时才支持正则表达式匹配字符串
+        echo "error"
+        exit 0
+    else
+        echo "OK"
+    fi
+}
 
 # while loop
 COUNTER=10
@@ -232,3 +245,38 @@ do
     wc -l "${FILE}"
 done
 EOF
+
+# () $() (()) $(()) [] [[]]
+at=(`which gita`)                   # ()小括号可有可无
+
+touch $(date +%Y.%m.%d).md          # $()作用同``，执行命令
+touch `date +%Y.%m.%d`.md           # 操作同上
+
+COUNTER=10
+((COUNTER = COUNTER + 1))           # (())计算数学表达式
+((COUNTER++))
+((COUNTER = $COUNTER + 1))          # (())中的变量可加$，也可不加
+
+res=$((1+2+3))                      # $(())计算数学表达式，并取计算的结果
+
+file="sh.sh"
+if [ ! -f $file ]; then             # []提供基本测试功能
+    echo "no such $file file"
+fi
+# if [ $file != *.sh ]; then        # error，[]不支持正则匹配
+#     echo "$file is not *.sh"
+# fi
+
+# 注意：正则表达式不用双引号引起，$file（匹配对象）可用可不用双引号引起
+if [[ $file != *.sh ]]; then        # [[]]支持正则匹配，$file是否以.sh结尾
+    echo "$file is not *.sh"
+fi
+file="http://192.168.80.2/sh.sh"    
+if [[ $file =~ ^http://* ]]; then   # 正则匹配，$file是否以http://开头，且后面还有零个或多个字符
+    echo "OK"
+fi
+
+# 且在[]中，逻辑与 -a， 逻辑或 -o
+# 在[[]]中，换成 && ||
+
+# https://www.jianshu.com/p/3e1eaaa3fee8
