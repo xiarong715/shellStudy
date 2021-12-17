@@ -252,9 +252,11 @@ at=(`which gita`)                   # ()小括号可有可无
 touch $(date +%Y.%m.%d).md          # $()作用同``，执行命令
 touch `date +%Y.%m.%d`.md           # 操作同上
 
+# (())支持高级操作：前++var --var，后var++，var--，逻辑求反！,位求反~
 COUNTER=10
 ((COUNTER = COUNTER + 1))           # (())计算数学表达式
 ((COUNTER++))
+((COUNTER--))
 ((COUNTER = $COUNTER + 1))          # (())中的变量可加$，也可不加
 
 res=$((1+2+3))                      # $(())计算数学表达式，并取计算的结果
