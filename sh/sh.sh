@@ -247,7 +247,11 @@ done
 EOF
 
 # () $() (()) $(()) [] [[]]
-at=(`which gita`)                   # ()小括号可有可无
+at=(`which gita`)                   # 此处()小括号可有可无
+repo=(`echo "ab cd ef"`)            # 些处，小括号必须的，结果作为数组的元素      
+for item in ${repo[@]}; do
+    echo $item
+done
 
 touch $(date +%Y.%m.%d).md          # $()作用同``，执行命令
 touch `date +%Y.%m.%d`.md           # 操作同上
