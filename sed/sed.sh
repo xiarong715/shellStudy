@@ -1,6 +1,13 @@
 #!/bin/bash
 
 # 参考：https://www.cnblogs.com/linux-wangkun/p/5745584.html
+# 参考：https://www.gnu.org/software/sed/manual/sed.html
+
+# sed 流编辑，对流内容的辑辑（替换、删除、打印等）
+
+# 语法 sed SCRIPT INPUTFILE...
+# sed 's/hello/world/' input.txt > output.txt
+# sed -i 's/hello/world/' input.txt
 
 # sed study
 # 编辑流中的字符串，流可以为文件和管道
