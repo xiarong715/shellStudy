@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# 备份原始的hosts文件
+cp /etc/hosts /etc/hosts.bak
+
+# 从远程服务器获取最新的hosts内容
+# 这里假设远程服务器有一个名为hosts的文件可以直接下载
+wget -O /tmp/new_hosts https://gitee.com/if-the-wind/github-hosts/raw/main/hosts
+
+# 检查下载是否成功
+if [ $? -eq 0 ]; then
+    # 追加内容
+    git="192.168.43.99	git.ipanel.cn" 
+    cas="192.168.45.80	cas.ipanel.cn"
+    echo ""   >> /tmp/new_hosts # 换行
+    echo ""   >> /tmp/new_hosts # 换行
+    echo $git >> /tmp/new_hosts
+    echo $cas >> /tmp/new_hosts
+
+    # 将下载的内容覆盖到本地hosts文件
+    cat /tmp/new_hosts > /etc/hosts
+    echo "Hosts文件已成功更新"
+else
+    echo "下载最新hosts文件失败"
+fi
+
+# 删除临时文件
+rm -f /tmp/new_hosts
